@@ -195,6 +195,48 @@ class ExcelTest extends TestCase
     /**
      * @test
      */
+    public function can_store_csv_export_with_custom_variable_columns_setting()
+    {
+        $export = new class implements WithEvents, FromCollection, WithCustomCsvSettings {
+            use RegistersEventListeners;
+
+            /**
+             * @return Collection
+             */
+            public function collection()
+            {
+                return collect([
+                    ['A1', 'B1'],
+                    ['A2', 'B2', 'C2'],
+                    ['A3']
+                ]);
+            }
+
+            /**
+             * @return array
+             */
+            public function getCsvSettings(): array
+            {
+                return [
+                    'variable_columns' => true
+                ];
+            }
+        };
+
+        $this->SUT->store($export, 'filename.csv');
+
+        $contents = file_get_contents(__DIR__ . '/Data/Disks/Local/filename.csv');
+
+        $rows = explode(PHP_EOL, $contents, 3);
+
+        $this->assertEquals('"A1","B1"', $rows[0]);
+        $this->assertEquals('"A2","B2","C2"', $rows[1]);
+        $this->assertEquals('"A3"', $rows[3]);
+    }
+
+    /**
+     * @test
+     */
     public function cannot_use_from_collection_and_from_view_on_same_export()
     {
         $this->expectException(\Maatwebsite\Excel\Exceptions\ConcernConflictException::class);

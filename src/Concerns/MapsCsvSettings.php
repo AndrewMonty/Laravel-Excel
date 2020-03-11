@@ -37,6 +37,11 @@ trait MapsCsvSettings
     protected static $excelCompatibility = false;
 
     /**
+     * @var bool
+     */
+    protected static $variableColumns = false;
+
+    /**
      * @var string
      */
     protected static $escapeCharacter = '\\';
@@ -62,6 +67,7 @@ trait MapsCsvSettings
         static::$useBom               = Arr::get($config, 'use_bom', static::$useBom);
         static::$includeSeparatorLine = Arr::get($config, 'include_separator_line', static::$includeSeparatorLine);
         static::$excelCompatibility   = Arr::get($config, 'excel_compatibility', static::$excelCompatibility);
+        static::$variableColumns      = Arr::get($config, 'variable_columns', static::$variableColumns);
         static::$escapeCharacter      = Arr::get($config, 'escape_character', static::$escapeCharacter);
         static::$contiguous           = Arr::get($config, 'contiguous', static::$contiguous);
         static::$inputEncoding        = Arr::get($config, 'input_encoding', static::$inputEncoding);
